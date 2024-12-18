@@ -128,3 +128,57 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Visual Studio and C# specific files and directories
+.vs/                # Visual Studio cache
+bin/                # Compiled binary files
+obj/                # Temporary object files
+Debug/              # Debug build output
+Release/            # Release build output
+TestResults/        # Test results folder
+
+## Visual Studio files
+*.user              # User-specific files
+*.suo               # Solution user options
+*.cache             # Cache files
+*.pdb               # Debug database files
+*.tlog              # Task log files
+*.lastbuildstate    # Last build state
+*.dll               # Dynamic-link libraries
+*.exe               # Executables
+*.appx              # Windows app package files
+*.appxbundle        # Windows app bundle files
+*.msix              # MSIX installer package
+*.msixbundle        # MSIX bundle
+
+# NuGet files
+packages/           # NuGet packages folder
+*.nupkg             # NuGet package files
+project.lock.json   # NuGet lock file (legacy)
+project.fragment.lock.json
+
+# Temporary and backup files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.orig
+
+# Configuration files
+*.config            # Configuration files
+appsettings.json    # Application settings file (optional)
+appsettings.*.json  # Environment-specific settings (optional)
+
+# Code Coverage
+*.coverage
+*.coveragexml
+*.codecov
+
+# Azure Function-specific files
+.local.settings.json  # Azure Function local settings
+
+# Generated files
+Generated/          # Generated code folders (optional)
+
+# Backup files
+*.bak              # Backup files
