@@ -1,0 +1,9 @@
+nz-row {
+    display: flex;
+    justify-content: center;
+  }
+  
+  nz-col {
+    display: flex;
+    justify-content: center;
+  }
