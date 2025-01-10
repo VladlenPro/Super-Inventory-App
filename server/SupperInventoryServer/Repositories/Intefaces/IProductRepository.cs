@@ -9,6 +9,6 @@ namespace SupperInventoryServer.Repositories.Intefaces
         Task<Product> GetProductByIdAsync(string id);
         Task AddProductAsync(Product product);
         Task UpdateProductAsync(string id, Product product);
-        Task DeleteProductAsync(string id);
+        Task DeleteProductAsync(string id); // update status
     }
 }

@@ -32,13 +32,11 @@ namespace SupperInventoryServer.Models
         public List<string> Tags { get; set; }  
 
         [BsonElement("sale")]
-        public decimal? SalePrice { get; set; }  
+        public decimal? DiscauntProsent { get; set; }  
 
         [BsonElement("images")]
         public List<string> Images { get; set; } 
 
-        [BsonElement("stock")]
-        public double Stock { get; set; }
 
     }
 }

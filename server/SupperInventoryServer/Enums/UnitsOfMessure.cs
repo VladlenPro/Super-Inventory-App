@@ -2,11 +2,9 @@
 {
     public enum UnitOfMeasure
     {
-        Piece,
-        Kg,
-        Gram,
-        Liter,
-        Milliliter,
+        Piece,//?
+        Kg, // weight
+        Liter,//? Volume
         Pack
     }
 }
