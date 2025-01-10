@@ -1,0 +1,42 @@
+<nz-layout>
+    <nz-header>
+      <div class="logo"></div>
+      <ul nz-menu nzTheme="dark" nzMode="horizontal" class="header-menu">
+        <li nz-menu-item class="logout-button">
+          <button nz-button nzType="primary" >Logout</button>
+        </li>
+      </ul>
+    </nz-header>
+    <nz-layout>
+      <nz-sider nzWidth="200px" nzTheme="light">
+        <ul nz-menu nzMode="inline" class="sider-menu">
+          <li nz-submenu nzIcon="bar-chart" nzTitle="Dashboard"></li>
+          <li nz-submenu nzIcon="user" nzTitle="Users">
+            <ul>
+              <li nz-menu-item>Add user</li>
+              <li nz-menu-item>Update user</li>
+            </ul>
+          </li>
+          <li nz-submenu nzTitle="categories" nzIcon="laptop">
+            <ul>
+              <li nz-menu-item>Add new category</li>
+            </ul>
+          </li>
+          <li nz-submenu nzTitle="Stores" nzIcon="shop">
+            <ul>
+              <li nz-menu-item>Add new store</li>
+              <li nz-menu-item>Update store</li>
+            </ul>
+          </li>
+        </ul>
+      </nz-sider>
+      <nz-layout class="inner-layout">
+        <!-- <nz-breadcrumb>
+          <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+          <nz-breadcrumb-item>List</nz-breadcrumb-item>
+          <nz-breadcrumb-item>App</nz-breadcrumb-item>
+        </nz-breadcrumb> -->
+        <nz-content><router-outlet></router-outlet></nz-content>
+      </nz-layout>
+    </nz-layout>
+  </nz-layout>
