@@ -11,6 +11,7 @@ public class User
         public string Id { get; set; }
 
         [BsonElement("username")]
+        [BsonRequired]
         public string Username { get; set; }
 
         [BsonElement("password")]

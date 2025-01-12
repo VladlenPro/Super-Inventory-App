@@ -20,7 +20,7 @@ namespace SupperInventoryServer.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            User user = _userService.Authenticate(request.Username, request.Password);
+            User? user = _userService.Authenticate(request.Username, request.Password);
 
             if (user == null)
             {

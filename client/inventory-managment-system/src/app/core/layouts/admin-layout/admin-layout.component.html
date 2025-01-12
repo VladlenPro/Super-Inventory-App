@@ -11,11 +11,11 @@
       <nz-sider nzWidth="200px" nzTheme="light">
         <ul nz-menu nzMode="inline" class="sider-menu">
           <li nz-submenu nzIcon="bar-chart" nzTitle="Dashboard"></li>
-          <li nz-submenu nzIcon="user" nzTitle="Users">
-            <ul>
+          <li nz-submenu nzIcon="user" nzTitle="Users" [routerLink]="['/admin/users']">
+            <!-- <ul>
               <li nz-menu-item>Add user</li>
               <li nz-menu-item>Update user</li>
-            </ul>
+            </ul> -->
           </li>
           <li nz-submenu nzTitle="categories" nzIcon="laptop">
             <ul>
