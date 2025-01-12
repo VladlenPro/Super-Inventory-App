@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using SupperInventoryServer.DTOs.Requests;
+using SupperInventoryServer.DTOs.Responses;
+using SupperInventoryServer.Models;
+using SupperInventoryServer.Services;
 
 namespace SupperInventoryServer.Controllers
 {
@@ -7,14 +10,29 @@ namespace SupperInventoryServer.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
+        private readonly UserService _userService;
+
+        public AuthController(UserService userService)
+        {
+            _userService = userService;
+        }
+
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            if (request.Username == "admin" && request.Password == "admin123")
+            User user = _userService.Authenticate(request.Username, request.Password);
+
+            if (user == null)
             {
-                return Ok(new {token= "sample-token"});
+                return Unauthorized(new { message = "Invalid username or password" });
             }
-            return Unauthorized();
+
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.username = user.Username;
+            loginResponse.token = "sample-token";
+            loginResponse.userTypes = user.UserTypes;
+
+            return Ok(loginResponse);
         }
 
     }

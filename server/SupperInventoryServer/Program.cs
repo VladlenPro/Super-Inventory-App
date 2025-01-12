@@ -1,6 +1,7 @@
 using SupperInventoryServer.Data;
 using SupperInventoryServer.Repositories.Intefaces;
 using SupperInventoryServer.Repositories;
+using SupperInventoryServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
@@ -17,6 +18,8 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 builder.Services.AddSingleton<MongoDbContext>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddSingleton<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<UserService>();
 
 builder.Services.AddControllers().
     AddJsonOptions(options =>

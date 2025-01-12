@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { LoginResponse } from '../../../shared/models/Responses/LoginResponse';
 
 @Component({
   selector: 'app-login',
@@ -11,9 +12,7 @@ import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  // public username: string = '';
-  // public password: string = '';
-  // public errorMessage: string | null = null;
+
   public validateForm!: FormGroup; 
   public errorMessage: string | null = null;
 
@@ -35,8 +34,9 @@ export class LoginComponent implements OnInit {
     if(this.validateForm.valid) {
       const {username, password} = this.validateForm.value;
       this.authService.login(username!, password!).subscribe({
-        next: (response) => {
+        next: (response: LoginResponse) => {
           if (response) {
+            this.authService.saveUserData(response);
             this.router.navigate(['/admin']);
           } else {
             this.errorMessage = 'Invalid username or password';

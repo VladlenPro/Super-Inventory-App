@@ -15,5 +15,6 @@ namespace SupperInventoryServer.Data
         }
 
         public IMongoCollection<Product> Products => _database.GetCollection<Product>("Product");
+        public IMongoCollection<User> Users => _database.GetCollection<User>("User");
     }
 }
