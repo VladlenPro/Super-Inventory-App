@@ -27,6 +27,8 @@ export class UserEditComponent implements OnInit {
   ) {
     this.userForm = this.fb.group({
       username: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
       userTypes: [[]],
       stores: [''],
@@ -65,13 +67,20 @@ export class UserEditComponent implements OnInit {
 
   private mapToUserRequest(): UserRequest {
     const formValues = this.userForm.getRawValue();
+    let stores: string[] = [];
+    
+    if(formValues.stores) {
+      stores = formValues.stores.split(',').map((s:string) => s.trim());
+    }
   
     return {
       id: this.isEditMode ? this.userId ?? this.userId ?? undefined : undefined,
       username: formValues.username,
+      firstName: formValues.firstName,
+      lastName: formValues.lastName,
       password: formValues.password,
       userTypes: formValues.userTypes,
-      stores: formValues.stores ? formValues.stores.split(',') : [],
+      stores: stores,
       phone: formValues.phone,
       address: formValues.address,
       isActive: formValues.isActive

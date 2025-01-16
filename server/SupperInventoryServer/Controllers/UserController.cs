@@ -15,6 +15,7 @@ namespace SupperInventoryServer.Controllers
         public UserController(UserService userService)
         {
             _userService = userService;
+            //add loggger nuget logforent!!!
         }
 
         [HttpGet]
@@ -33,7 +34,12 @@ namespace SupperInventoryServer.Controllers
                         data = users
                     });
                 }
-                return NoContent();
+                 return Ok(new
+                    {
+                        success = true,
+                        message = "hi",
+                        data = users
+                    });
             }
             catch (Exception ex)
             {
@@ -93,6 +99,13 @@ namespace SupperInventoryServer.Controllers
                 data = user
             });
         }
+ 
+        // [HttpPost("userSeacrch")]
+        
+        // public async IActionResult<List<User>> UserSearch(UserSearchObject userSearchrequest)
+        // {
+        //     return await Ok();
+        // }
     }
 
 

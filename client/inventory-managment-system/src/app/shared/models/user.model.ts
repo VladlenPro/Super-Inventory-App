@@ -1,7 +1,9 @@
 export interface User {
     id: string;
-    password: string;
     username: string;
+    firstName: string;
+    lastName: string;
+    password: string;
     userTypes: string[];
     stores: string[];
     phone?: string;

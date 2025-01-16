@@ -9,6 +9,22 @@
     </nz-form-control>
   </nz-form-item>
 
+   <!-- FirstName -->
+   <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="firstName">First name</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input the first name!">
+      <input nz-input formControlName="firstName" id="firstName" placeholder="Enter first name" />
+    </nz-form-control>
+  </nz-form-item>
+
+   <!-- LastName -->
+   <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="lastName">Last name</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input the last name!">
+      <input nz-input formControlName="lastName" id="lastName" placeholder="Enter lastname" />
+    </nz-form-control>
+  </nz-form-item>
+
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="password">Password</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please enter a password.">

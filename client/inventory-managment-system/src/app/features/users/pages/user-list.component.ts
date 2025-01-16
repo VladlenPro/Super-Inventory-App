@@ -13,7 +13,8 @@ import { Router } from '@angular/router';
 })
 
 export class UserListComponent implements OnInit {
-  users: User[] = [];
+  public users: User[] = [];
+  public searchText: string = '';
 
   constructor(
     private userService: UserService,
@@ -32,6 +33,10 @@ export class UserListComponent implements OnInit {
     this.router.navigate(['/users/edit', userId]);
     }
 
+  public maskPassword(password: string): string {
+      return password ? '••••••' : '';
+    }
+
   public toggleStatus(user: User): void {
     const previousStatus = user.isActive;
     user.isActive = !user.isActive;
@@ -48,7 +53,7 @@ export class UserListComponent implements OnInit {
   }
 
   private loadUsers(): void {
-    this.userService.getAllUsers().subscribe((data) => {
+    this.userService.getAllUsers().subscribe((data: User[]) => {
       this.users = data;
     });
   }
