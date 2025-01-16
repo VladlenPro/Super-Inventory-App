@@ -14,6 +14,12 @@ public class User
         [BsonRequired]
         public string Username { get; set; }
 
+        [BsonElement("firstName")]
+        public string FirstName { get; set; }
+
+        [BsonElement("lastName")]
+        public string LastName { get; set; }
+
         [BsonElement("password")]
         public string Password { get; set; }
 

@@ -31,67 +31,72 @@ public class UserService
         return await _userRepository.GetAllUsersAsync();
     }
 
-    public async Task<User> GetUserByIdAsync (string userId)
+    public async Task<User> GetUserByIdAsync(string userId)
     {
-        return await _userRepository.GetUserByIdAsync( userId);
+        return await _userRepository.GetUserByIdAsync(userId);
     }
 
     public async Task<bool> UpdateUserStatusAsync(string userId, bool isActive)
     {
-       return await _userRepository.UpdateUserStatusAsync(userId, isActive);
+        return await _userRepository.UpdateUserStatusAsync(userId, isActive);
     }
 
     public async Task<(bool Success, string Message, User? User)> UpsertUserAsync(UserRequest userRequest)
     {
 
         if (!string.IsNullOrEmpty(userRequest.Id))
-    {
-        // ✅ Update existing user
-        var existingUser = await _userRepository.GetUserByIdAsync(userRequest.Id);
-        if (existingUser == null)
         {
-            return (false, "User not found.", null);
+            // ✅ Update existing user
+            var existingUser = await _userRepository.GetUserByIdAsync(userRequest.Id);
+            if (existingUser == null)
+            {
+                return (false, "User not found.", null);
+            }
+
+            // Update user fields
+            existingUser.Username = userRequest.Username;
+            existingUser.FirstName = userRequest.FirstName;
+            existingUser.LastName = userRequest.LastName;
+            existingUser.Password = userRequest.Password;
+            existingUser.UserTypes = userRequest.UserTypes;
+            existingUser.Stores = userRequest.Stores;
+            existingUser.Phone = userRequest.Phone;
+            existingUser.Address = userRequest.Address;
+            existingUser.IsActive = userRequest.IsActive;
+
+            await _userRepository.UpdateUserAsync(existingUser);
+            return (true, "User updated successfully.", existingUser);
         }
-
-        // Update user fields
-        existingUser.Username = userRequest.Username;
-        existingUser.Password = userRequest.Password;
-        existingUser.UserTypes = userRequest.UserTypes;
-        existingUser.Stores = userRequest.Stores;
-        existingUser.Phone = userRequest.Phone;
-        existingUser.Address = userRequest.Address;
-        existingUser.IsActive = userRequest.IsActive;
-
-        await _userRepository.UpdateUserAsync(existingUser);
-        return (true, "User updated successfully.", existingUser);
-    }
-    else{
-        var user = new User
+        else
         {
-            Username = userRequest.Username,
-            Password = userRequest.Password,
-            UserTypes = userRequest.UserTypes,
-            Stores = userRequest.Stores,
-            Phone = userRequest.Phone,
-            Address = userRequest.Address,
-            IsActive = userRequest.IsActive
-        };
+            var user = new User
+            {
+                Username = userRequest.Username,
+                FirstName = userRequest.FirstName,
+                LastName = userRequest.LastName,
+                Password = userRequest.Password,
+                UserTypes = userRequest.UserTypes,
+                Stores = userRequest.Stores,
+                Phone = userRequest.Phone,
+                Address = userRequest.Address,
+                IsActive = userRequest.IsActive
+            };
 
-        try
-        {
-            // Attempt to insert the user
-            await _userRepository.InsertUserAsync(user);
+            try
+            {
+                // Attempt to insert the user
+                await _userRepository.InsertUserAsync(user);
 
-            // Retrieve the newly created user by username to get the generated ID
-            var insertedUser = await _userRepository.GetUserByUsernameAsync(user.Username);
-            return (true, "User created successfully.", insertedUser);
+                // Retrieve the newly created user by username to get the generated ID
+                var insertedUser = await _userRepository.GetUserByUsernameAsync(user.Username);
+                return (true, "User created successfully.", insertedUser);
+            }
+            catch (MongoWriteException ex) when (ex.WriteError.Category == ServerErrorCategory.DuplicateKey)
+            {
+                // Handle duplicate username error
+                return (false, "Username already exists.", null);
+            }
         }
-        catch (MongoWriteException ex) when (ex.WriteError.Category == ServerErrorCategory.DuplicateKey)
-        {
-            // Handle duplicate username error
-            return (false, "Username already exists.", null);
-        }
-    }
     }
 
 

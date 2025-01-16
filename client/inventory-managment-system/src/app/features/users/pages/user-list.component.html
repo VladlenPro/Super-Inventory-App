@@ -1,37 +1,47 @@
 <div class="user-list-header">
   <h2>Users</h2>
-  <button nz-button nzType="primary" (click)="addNewUser()">Add New User</button>
+  <div class="filters">
+    <!-- Free Search -->
+    <input nz-input placeholder="Search users" [(ngModel)]="searchText" />
+
+    <!-- Active/Inactive Filter -->
+    <!-- <label nz-checkbox [(ngModel)]="filterIsActive" (ngModelChange)="applyFilters()">
+      Show only active users
+    </label> -->
+
+    <button nz-button nzType="primary" (click)="addNewUser()">Add New User</button>
+  </div>
 </div>
 
 <nz-table #basicTable [nzData]="users" [nzBordered]="true" [nzSize]="'middle'">
-    <thead>
-      <tr>
-        <th nzWidth="20%">Username</th>
-        <th nzWidth="15%">Roles</th>
-        <th nzWidth="20%">Stores</th>
-        <th nzWidth="15%">Phone</th>
-        <th nzWidth="20%">Address</th>
-        <th nzWidth="10%">Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let user of basicTable.data">
-        <td>{{ user.username }}</td>
-        <td>{{ user.userTypes.join(', ') }}</td>
-        <td>{{ user.stores.join(', ') }}</td>
-        <td>{{ user.phone }}</td>
-        <td>{{ user.address }}</td>
-        <td>
-          <nz-switch
-            [ngModel]="user.isActive"
-            (ngModelChange)="toggleStatus(user)"
-            [nzCheckedChildren]="'Active'"
-            [nzUnCheckedChildren]="'Inactive'"
-          ></nz-switch>
-        </td>
-        <td>
-          <button nz-button nzType="link"  (click)="editUser(user.id)">Edit</button>
-        </td>
-      </tr>
-    </tbody>
-  </nz-table>
+  <thead>
+    <tr>
+      <th nzWidth="10%">Username</th>
+      <th nzWidth="10%">Full name</th>
+      <th nzWidth="10%">Password</th>
+      <th nzWidth="15%">Roles</th>
+      <th nzWidth="20%">Stores</th>
+      <th nzWidth="15%">Phone</th>
+      <th nzWidth="20%">Address</th>
+      <th nzWidth="10%">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of basicTable.data">
+      <td>{{ user.username }}</td>
+      <td>{{ user.firstName }} {{ user.lastName }}</td>
+      <td>{{ maskPassword(user.password) }}</td>
+      <td>{{ user.userTypes.join(', ') }}</td>
+      <td>{{ user.stores.join(', ') }}</td>
+      <td>{{ user.phone }}</td>
+      <td>{{ user.address }}</td>
+      <td>
+        <nz-switch [ngModel]="user.isActive" (ngModelChange)="toggleStatus(user)" [nzCheckedChildren]="'Active'"
+          [nzUnCheckedChildren]="'Inactive'"></nz-switch>
+      </td>
+      <td>
+        <button nz-button nzType="link" (click)="editUser(user.id)">Edit</button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

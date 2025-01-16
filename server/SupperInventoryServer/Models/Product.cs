@@ -26,10 +26,12 @@ namespace SupperInventoryServer.Models
         public UnitOfMeasure? UnitOfMeasure { get; set; }
 
         [BsonRepresentation(BsonType.String)]
-        public List<Category> Categories { get; set; }
+        public Category Categories { get; set; }
 
-        [BsonElement("tags")]
-        public List<string> Tags { get; set; }  
+        // public Category SubCategories { get; set; }
+
+        // [BsonElement("tags")]
+        // public List<string> Tags { get; set; }  optional
 
         [BsonElement("sale")]
         public decimal? DiscauntProsent { get; set; }  

@@ -6,6 +6,8 @@ export class UserMapper {
         return {
             id: userResponse.id,
             username: userResponse.username,
+            firstName: userResponse.firstName,
+            lastName: userResponse.lastName, 
             password: userResponse.password,
             userTypes: userResponse.userTypes,
             stores: userResponse.stores,

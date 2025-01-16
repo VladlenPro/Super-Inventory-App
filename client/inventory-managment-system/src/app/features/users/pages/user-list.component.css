@@ -1,7 +1,28 @@
+.user-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.filters input[nz-input] {
+  width: 200px;
+}
+
+.filters label {
+  margin: 0;
+}
+
 nz-table {
     margin: 20px 0;
   }
   
-  nz-switch {
-    margin-right: 10px;
-  }
+nz-switch {
+  margin-right: 10px;
+}
