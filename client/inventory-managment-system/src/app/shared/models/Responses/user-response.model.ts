@@ -14,6 +14,7 @@ export interface UserResponse {
   success: boolean;
   message: string;
   data: User;
+  resultType?: string;
 }
 
 export interface UserListResponse {
