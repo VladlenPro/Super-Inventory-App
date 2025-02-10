@@ -1,5 +1,6 @@
 using MongoDB.Driver;
 using SupperInventoryServer.Data;
+using SupperInventoryServer.DTOs;
 using SupperInventoryServer.Models;
 using SupperInventoryServer.Repositories.Intefaces;
 
@@ -17,6 +18,36 @@ public class UserRepository : IUserRepository
     public async Task<IEnumerable<User>> GetAllUsersAsync()
     {
         return await _users.Find(User => true).ToListAsync();
+    }
+
+     public async Task<PagedResult<User>> GetUsersPageAsync(int pageNumber, int pageSize)
+    {
+  
+        if (pageNumber < 1) pageNumber = 1;
+        if (pageSize < 1) pageSize = 10;
+
+
+        FilterDefinition<User> filter = Builders<User>.Filter.Empty;
+
+
+        long totalCount = await _users.CountDocumentsAsync(filter);
+
+        // Calculate the number of documents to skip
+        int skip = (pageNumber - 1) * pageSize;
+
+        // Retrieve the page of users (consider adding a sort for a consistent order)
+        IEnumerable<User> users = await _users.Find(filter)
+                                .Skip(skip)
+                                .Limit(pageSize)
+                                .ToListAsync();
+
+        return new PagedResult<User>
+        {
+            Items = users,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
     }
 
     public User GetUserByUserName(string username)

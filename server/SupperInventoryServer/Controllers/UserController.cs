@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SupperInventoryServer.DTOs;
 using SupperInventoryServer.DTOs.Requests;
+using SupperInventoryServer.DTOs.Responses;
+using SupperInventoryServer.Enums;
 using SupperInventoryServer.Models;
 using SupperInventoryServer.Services;
 
@@ -19,89 +22,73 @@ namespace SupperInventoryServer.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAllUsersAsync()
+        public async Task<IActionResult> GetAllUsersAsync()
         {
-            try
-            {
-                IEnumerable<User> users = await _userService.GetAllUsersAsync();
+            OperationResponse<IEnumerable<User>> operationResult = await _userService.GetAllUsersAsync();
 
-                if (users != null)
-                {
-                    return Ok(new
-                    {
-                        success = true,
-                        message = "hi",
-                        data = users
-                    });
-                }
-                 return Ok(new
-                    {
-                        success = true,
-                        message = "hi",
-                        data = users
-                    });
+            if (operationResult.Success)
+            {
+                return Ok(operationResult);
             }
-            catch (Exception ex)
+            else
             {
-
-                return BadRequest(new
-                {
-                    success = false,
-                    errors = ex.Message
-                });
+                return BadRequest(operationResult);
             }
 
         }
+        // [HttpGet]
+        // public async Task<IActionResult> GetUsers([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        // {
+        //     PagedResult<User> pagedResult = await _userService.GetUsersPageAsync(pageNumber, pageSize);
+        //     return Ok(pagedResult);
+        // }
 
-         [HttpGet("{id}")]
+        [HttpGet("{id}")]
 
-          public async Task<IActionResult> GetUserById(string id)
+        public async Task<IActionResult> GetUserById(string id)
         {
-            var user = await _userService.GetUserByIdAsync(id);
-            if (user == null)
+            OperationResponse<User> result = await _userService.GetUserByIdAsync(id);
+
+            if (!result.Success)
             {
-                return NotFound(new { success = false, message = "User not found." });
+                return BadRequest(result);
             }
 
-            return Ok(new { success = true, nessage = "user found", data = user });
+            return Ok(result);
         }
 
         [HttpPut("toggle-status")]
         public async Task<IActionResult> ToggleUserStatus([FromBody] UserUpdateStatusRequest request)
         {
-            var result = await _userService.UpdateUserStatusAsync(request.Id, request.IsActive);
-            if (!result)
+            OperationResponse<bool> result = await _userService.UpdateUserStatusAsync(request.Id, request.IsActive);
+            if (!result.Success)
             {
-                return NotFound(new { message = "User not found." });
+                return BadRequest(result);
             }
 
-            return NoContent();
+            return Ok(result);
         }
 
         [HttpPost("upsert")]
         public async Task<IActionResult> UpsertUser([FromBody] UserRequest userRequest)
         {
-            var (success, message, user) = await _userService.UpsertUserAsync(userRequest);
+            UpsertOperationResponse<User> result = await _userService.UpsertUserAsync(userRequest);
 
-            if (!success)
+            if (result.ResultType == UpsertResultType.AlreadyExists)
             {
-                return BadRequest(new
-                {
-                    success = false,
-                    message = message
-                });
+                return Conflict(result);
             }
 
-            return Ok(new
+            if (!result.Success)
             {
-                success = true,
-                message = message,
-                data = user
-            });
+                return BadRequest(result);
+            }
+
+            return Ok(result);
         }
- 
+
         // [HttpPost("userSeacrch")]
-        
+
         // public async IActionResult<List<User>> UserSearch(UserSearchObject userSearchrequest)
         // {
         //     return await Ok();
