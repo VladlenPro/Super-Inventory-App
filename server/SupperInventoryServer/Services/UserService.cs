@@ -11,7 +11,7 @@ namespace SupperInventoryServer.Services;
 public class UserService
 {
     private readonly IUserRepository _userRepository;
-    private readonly ILogger <UserService> _logger;
+    private readonly ILogger<UserService> _logger;
 
     public UserService(IUserRepository userRepository, ILogger<UserService> logger)
     {
@@ -37,7 +37,7 @@ public class UserService
         try
         {
             IEnumerable<User> users = await _userRepository.GetAllUsersAsync();
-            
+
             result.Success = true;
             result.Data = users;
             result.Message = "Users retrieved successfully.";
@@ -59,7 +59,7 @@ public class UserService
 
     public async Task<OperationResponse<User>> GetUserByIdAsync(string userId)
     {
-        
+
         OperationResponse<User> result = new OperationResponse<User>();
         result.Success = false;
         result.Message = "User not found";
@@ -73,7 +73,7 @@ public class UserService
                 result.Success = true;
                 result.Data = user;
                 result.Message = "User found";
-            }   
+            }
         }
         catch (Exception ex)
         {
@@ -87,8 +87,8 @@ public class UserService
     public async Task<OperationResponse<bool>> UpdateUserStatusAsync(string userId, bool isActive)
     {
         OperationResponse<bool> result = new OperationResponse<bool>();
-        
-        try 
+
+        try
         {
             bool isStatusCahnged = await _userRepository.UpdateUserStatusAsync(userId, isActive);
             result.Success = true;
@@ -98,7 +98,7 @@ public class UserService
         {
             _logger.LogError(ex, "Error retrieving users.");
             result.Success = false;
-            result.Message = $"An error occurred while retrieving users. error: {ex.Message}"; 
+            result.Message = $"An error occurred while retrieving users. error: {ex.Message}";
         }
 
         return result;
@@ -189,6 +189,25 @@ public class UserService
             result.Message = $"An error occurred: {ex.Message}";
             return result;
         }
+    }
+
+    public async Task<OperationResponse<IEnumerable<User>>> GetUsersByFilterAsync(UserFilter filter)
+    {
+        OperationResponse<IEnumerable<User>> response = new OperationResponse<IEnumerable<User>>();
+        try
+        {
+            IEnumerable<User> filteredUsers = await _userRepository.GetUsersByFilterAsync(filter);
+            response.Success = true;
+            response.Data = filteredUsers;
+            response.Message = "Users filtered successfully.";
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error filtering users.");
+            response.Success = false;
+            response.Message = $"An error occurred while filtering users. Error: {ex.Message}";
+        }
+        return response;
     }
 
 

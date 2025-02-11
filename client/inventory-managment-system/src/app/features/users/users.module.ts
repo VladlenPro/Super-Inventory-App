@@ -16,6 +16,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 import { FormsModule } from '@angular/forms';
 import { UserEditComponent } from './pages/user-edit.component';
+import { SharedModule } from '../../shared/shared.module';
 
 
 
@@ -36,7 +37,8 @@ import { UserEditComponent } from './pages/user-edit.component';
     NzInputModule,
     NzButtonModule,
     NzCheckboxModule,
-    NzSelectModule
+    NzSelectModule,
+    SharedModule  
   ]
 })
 export class UsersModule { }

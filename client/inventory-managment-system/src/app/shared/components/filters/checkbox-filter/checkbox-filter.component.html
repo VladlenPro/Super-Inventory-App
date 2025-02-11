@@ -1,0 +1,15 @@
+<label class="checkbox-filter-container">
+    <input
+        type="checkbox"
+        [name]="config.label"
+        [(ngModel)]="value"
+        (ngModelChange)="onValueChange()">
+    {{ config.label }}
+</label>
+<!-- <nz-checkbox
+    [name]="config.label"
+    [(ngModel)]="value"
+    [ngModelOptions]="{ standalone: true }"
+    (ngModelChange)="onValueChange()">
+    {{ config.label }}
+</nz-checkbox> -->

@@ -93,6 +93,17 @@ namespace SupperInventoryServer.Controllers
         // {
         //     return await Ok();
         // }
+
+        [HttpPost("filter")]
+        public async Task<IActionResult> FilterUsers([FromBody] UserFilter filter)
+        {
+            OperationResponse<IEnumerable<User>> result = await _userService.GetUsersByFilterAsync(filter);
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
     }
 
 

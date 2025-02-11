@@ -1,3 +1,4 @@
+using MongoDB.Bson;
 using MongoDB.Driver;
 using SupperInventoryServer.Data;
 using SupperInventoryServer.DTOs;
@@ -20,9 +21,9 @@ public class UserRepository : IUserRepository
         return await _users.Find(User => true).ToListAsync();
     }
 
-     public async Task<PagedResult<User>> GetUsersPageAsync(int pageNumber, int pageSize)
+    public async Task<PagedResult<User>> GetUsersPageAsync(int pageNumber, int pageSize)
     {
-  
+
         if (pageNumber < 1) pageNumber = 1;
         if (pageSize < 1) pageSize = 10;
 
@@ -62,18 +63,18 @@ public class UserRepository : IUserRepository
 
     public async Task InsertUserAsync(User user)
     {
-         await _users.InsertOneAsync(user);
+        await _users.InsertOneAsync(user);
     }
-    public async Task UpdateUserAsync(User updatedUser) 
+    public async Task UpdateUserAsync(User updatedUser)
     {
-         await _users.ReplaceOneAsync(user => user.Id == updatedUser.Id, updatedUser);
+        await _users.ReplaceOneAsync(user => user.Id == updatedUser.Id, updatedUser);
     }
 
-   public async Task<User> GetUserByIdAsync(string id)
-{
-    var result = await _users.FindAsync(user => user.Id == id);
-    return await result.FirstOrDefaultAsync();
-}
+    public async Task<User> GetUserByIdAsync(string id)
+    {
+        var result = await _users.FindAsync(user => user.Id == id);
+        return await result.FirstOrDefaultAsync();
+    }
 
     public async Task<bool> UpdateUserStatusAsync(string userId, bool isActive)
     {
@@ -81,4 +82,28 @@ public class UserRepository : IUserRepository
         var result = await _users.UpdateOneAsync(u => u.Id == userId, update);
         return result.ModifiedCount > 0;
     }
+
+    public async Task<IEnumerable<User>> GetUsersByFilterAsync(UserFilter filter)
+    {
+        FilterDefinitionBuilder<User> builder = Builders<User>.Filter;
+        FilterDefinition<User> filterDefinition = builder.Empty;
+
+        if (!string.IsNullOrWhiteSpace(filter.SearchText))
+        {
+            BsonRegularExpression regex = new BsonRegularExpression(filter.SearchText, "i");
+            filterDefinition &= builder.Or(
+                builder.Regex(u => u.Username, regex),
+                builder.Regex(u => u.FirstName, regex),
+                builder.Regex(u => u.LastName, regex)
+            );
+        }
+
+        if (filter.IsActive.HasValue)
+        {
+            filterDefinition &= builder.Eq(u => u.IsActive, filter.IsActive.Value);
+        }
+
+        return await _users.Find(filterDefinition).ToListAsync();
+    }
+
 }

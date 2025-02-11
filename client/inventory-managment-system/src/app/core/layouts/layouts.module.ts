@@ -25,7 +25,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     NzIconModule,
     NzLayoutModule,
     NzMenuModule,
-    NzButtonModule
+    NzButtonModule,
 ]
 })
 export class LayoutsModule { }
