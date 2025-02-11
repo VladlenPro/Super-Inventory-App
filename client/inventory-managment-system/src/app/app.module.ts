@@ -19,9 +19,9 @@ import { AuthModule } from './features/auth/auth.module';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { UserOutline, LockOutline, ShopOutline, LaptopOutline, NotificationOutline, BarChartOutline } from '@ant-design/icons-angular/icons';
 import { LayoutsModule } from './core/layouts/layouts.module';
+import { SearchOutline } from '@ant-design/icons-angular/icons';
 
-const icons = [UserOutline, LockOutline, ShopOutline, LaptopOutline, NotificationOutline, BarChartOutline];
-
+const icons = [UserOutline, LockOutline, ShopOutline, LaptopOutline, NotificationOutline, BarChartOutline, SearchOutline];
 
 registerLocaleData(en);
 
@@ -40,7 +40,8 @@ registerLocaleData(en);
     NzMenuModule,
     NzCardModule,
     NzGridModule,
-    NzIconModule.forRoot(icons)
+    NzIconModule.forRoot(icons),
+
   ],
   providers: [
     provideNzI18n(en_US),

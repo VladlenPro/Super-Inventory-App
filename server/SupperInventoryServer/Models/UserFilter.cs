@@ -2,8 +2,8 @@ using System;
 
 namespace SupperInventoryServer.Models;
 
-public class UserSearchObject
+public class UserFilter
 {
-    public string? UserName { get; set; }
+    public string? SearchText { get; set; }
     public bool? IsActive { get; set; }
 }

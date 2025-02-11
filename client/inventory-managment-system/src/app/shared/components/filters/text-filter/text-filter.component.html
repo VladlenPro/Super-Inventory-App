@@ -1,0 +1,9 @@
+<div class="text-filter-container">
+    <label>{{ config.label }}</label>
+    <input 
+        nz-input 
+        name="{{ config.label }}" 
+        [placeholder]="config.placeholder" 
+        [(ngModel)]="value"
+        (ngModelChange)="onValueChange()" />
+</div>

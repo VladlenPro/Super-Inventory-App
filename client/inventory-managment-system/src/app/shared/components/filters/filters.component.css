@@ -1,0 +1,17 @@
+.filters-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.filter-actions {
+  display: flex;
+  align-items: center;
+}

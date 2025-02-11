@@ -1,0 +1,28 @@
+<div class="filters-container">
+    <div *ngFor="let config of filterConfigs" class="filter-item">
+      <!-- For text inputs, we display a label above the control -->
+      <ng-container [ngSwitch]="config.type">
+        <!-- Text Input -->
+        <app-text-filter
+          *ngSwitchCase="'text'"
+          [config]="config"
+          [(value)]="filters[config.property]"
+          (valueChange)="onValueChange()">
+        </app-text-filter>
+  
+        <!-- Checkbox -->
+        <app-checkbox-filter
+          *ngSwitchCase="'checkbox'"
+          [config]="config"
+          [(value)]="filters[config.property]"
+          (valueChange)="onValueChange()">
+        </app-checkbox-filter>
+      </ng-container>
+    </div>
+
+    <div class="filter-actions">
+      <button nz-button nzType="primary" (click)="onSearch()">
+        <i nz-icon nzType="search" nzTheme="outline"></i>
+      </button>
+    </div>
+  </div>

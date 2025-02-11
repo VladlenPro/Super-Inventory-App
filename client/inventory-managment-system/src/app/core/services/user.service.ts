@@ -6,11 +6,13 @@ import { UserListResponse, UserResponse } from "../../shared/models/Responses/us
 import { UserMapper } from "../utils/user-maper";
 import { User } from "../../shared/models/user.model";
 import { UserRequest } from "../../shared/models/Requests/user-request.model";
+import { UserFilter } from "../../shared/models/user-filter.model";
 
 @Injectable({
     providedIn: 'root',
   })
 export class UserService {
+    
     private apiUrl = environment.baseUrl + 'user';
 
     constructor ( private http: HttpClient) {}
@@ -32,5 +34,11 @@ export class UserService {
 
     public toggleUserStatus(id: string, isActive: boolean): Observable<void> {
         return this.http.put<void>(this.apiUrl + '/toggle-status', { id, isActive });
+      }
+    
+    public searchUsers(filters: UserFilter): Observable<User[]> {
+        return  this.http.post<UserListResponse>(this.apiUrl + '/filter', filters).pipe(
+            map((response) => response.data.map(UserMapper.fromUserResponsetoUser))
+        );
       }
 }

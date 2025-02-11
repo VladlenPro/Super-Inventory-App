@@ -14,4 +14,5 @@ public interface IUserRepository
     Task InsertUserAsync(User user);
     Task UpdateUserAsync(User updatedUser);
     Task<bool> UpdateUserStatusAsync(string userId, bool isActive);
+    Task<IEnumerable<User>> GetUsersByFilterAsync(UserFilter filter);
 }

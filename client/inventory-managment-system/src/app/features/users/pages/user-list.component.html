@@ -1,16 +1,14 @@
 <div class="user-list-header">
   <h2>Users</h2>
-  <div class="filters">
-    <!-- Free Search -->
-    <input nz-input placeholder="Search users" [(ngModel)]="searchText" />
-
-    <!-- Active/Inactive Filter -->
-    <!-- <label nz-checkbox [(ngModel)]="filterIsActive" (ngModelChange)="applyFilters()">
-      Show only active users
-    </label> -->
-
+  
     <button nz-button nzType="primary" (click)="addNewUser()">Add New User</button>
-  </div>
+</div>
+<div class="filters">
+  <app-filters
+  [filterConfigs]="myFilters"
+  (filterChange)="handleFilterChange($event)"
+  (search)="onSearch($event)"
+></app-filters>
 </div>
 
 <nz-table #basicTable [nzData]="users" [nzBordered]="true" [nzSize]="'middle'">

@@ -5,7 +5,7 @@
   margin-bottom: 20px;
 }
 
-.filters {
+/* .filters {
   display: flex;
   align-items: center;
   gap: 15px;
@@ -17,6 +17,13 @@
 
 .filters label {
   margin: 0;
+} */
+.active {
+  color: green;
+}
+
+.inactive {
+  color: red;
 }
 
 nz-table {
