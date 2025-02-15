@@ -1,1 +1,31 @@
-<p>filters works!</p>
+<div class="filters-container">
+    <div *ngFor="let config of filterConfigs" class="filter-item">
+      <!-- For text inputs, we display a label above the control -->
+      <ng-container [ngSwitch]="config.type">
+        <!-- Text Input -->
+        <div *ngSwitchCase="'text'">
+          <label>{{ config.label }}</label>
+          <input
+            nz-input
+            name="{{ config.property }}"
+            [placeholder]="config.placeholder"
+            [(ngModel)]="filters[config.property]"
+            [ngModelOptions]="{ standalone: true }"
+            (ngModelChange)="onValueChange()"
+          />
+        </div>
+  
+        <!-- Checkbox -->
+        <div *ngSwitchCase="'checkbox'">
+          <!-- Using nz-checkbox which includes its own label display -->
+          <nz-checkbox
+            name="{{ config.property }}"
+            [(ngModel)]="filters[config.property]"
+            [ngModelOptions]="{ standalone: true }"
+            (ngModelChange)="onValueChange()">
+            {{ config.label }}
+          </nz-checkbox>
+        </div>
+      </ng-container>
+    </div>
+  </div>

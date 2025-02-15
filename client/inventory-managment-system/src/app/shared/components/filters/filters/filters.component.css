@@ -1,0 +1,10 @@
+.filters-container {
+    display: flex;
+    gap: 1rem;
+    /* align-items: center; */
+  }
+  
+.filter-item {
+    display: flex;
+    /* flex-direction: column; */
+  }

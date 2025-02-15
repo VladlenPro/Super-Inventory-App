@@ -3,6 +3,7 @@ import { User } from '../../../shared/models/user.model';
 import { UserService } from '../../../core/services/user.service';
 import { error } from '@ant-design/icons-angular';
 import { Router } from '@angular/router';
+import { FilterConfig } from '../../../shared/models/filter-config.model';
 
 @Component({
   selector: 'app-user-list',
@@ -15,6 +16,29 @@ import { Router } from '@angular/router';
 export class UserListComponent implements OnInit {
   public users: User[] = [];
   public searchText: string = '';
+  public  myFilters: FilterConfig[] = [
+    {
+      type: 'text',
+      label: 'Search Input',
+      property: 'searchText',
+      placeholder: 'Search...'
+    },
+    {
+      type: 'checkbox',
+      label: 'Active',
+      property: 'isActive',
+    }
+  ];
+
+  public filters: {[key: string]: any} = {};
+  public  items = [
+    { name: 'Item 1', active: true },
+    { name: 'Item 2', active: false },
+    { name: 'Item 3', active: true },
+    { name: 'Item 4', active: false }
+  ];
+
+
 
   constructor(
     private userService: UserService,
@@ -50,6 +74,29 @@ export class UserListComponent implements OnInit {
       }
      
     );
+  }
+  public handleFilterChange(newFilters: { [key: string]: any }): void {
+    this.filters = newFilters;
+  }
+  
+  public  get filteredItems() {
+    return this.items.filter(item => {
+      let matches = true;
+
+      // If searchText is provided, filter by item name.
+      if (this.filters['searchText']) {
+        matches = item.name
+          .toLowerCase()
+          .includes(this.filters['searchText'].toLowerCase());
+      }
+
+      // Filter by active/inactive based on the checkbox.
+      if (matches && this.filters['isActive'] !== undefined) {
+        matches = item.active === this.filters['isActive'];
+      }
+
+      return matches;
+    });
   }
 
   private loadUsers(): void {
