@@ -19,14 +19,15 @@ export class UserListComponent implements OnInit {
   public  myFilters: FilterConfig[] = [
     {
       type: 'text',
-      label: 'Search Input',
+      label: 'Search',
       property: 'searchText',
       placeholder: 'Search...'
     },
     {
       type: 'checkbox',
-      label: 'Active',
+      label: 'Show Active Only',
       property: 'isActive',
+      defaultValue: false
     }
   ];
 

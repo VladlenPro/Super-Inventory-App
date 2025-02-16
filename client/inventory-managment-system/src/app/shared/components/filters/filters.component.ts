@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FilterConfig } from '../../../models/filter-config.model';
+import { FilterConfig } from '../../models/filter-config.model';
 import { config } from 'rxjs';
 
 @Component({
@@ -12,6 +12,8 @@ import { config } from 'rxjs';
 export class FiltersComponent implements OnInit {
   @Input() public filterConfigs: FilterConfig[] = [];
   @Output() public filterChange = new EventEmitter<{[key:string]: any}>();
+  @Output() private search = new EventEmitter<{[key:string]: any}>();
+
 
   public filters: {[key: string]: any} = {};
 
@@ -31,6 +33,10 @@ export class FiltersComponent implements OnInit {
 
   public onValueChange() : void {
     this.emitFilters();
+  }
+
+  public onSearch(): void {
+    this.search.emit(this.filters);
   }
 
 
