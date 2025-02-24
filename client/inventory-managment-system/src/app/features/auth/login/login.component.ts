@@ -3,24 +3,27 @@ import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { LoginResponse } from '../../../shared/models/Responses/LoginResponse';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-login',
   standalone: false,
-  
+
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
 
-  public validateForm!: FormGroup; 
+  public validateForm!: FormGroup;
   public errorMessage: string | null = null;
 
   constructor(
-    private authService: AuthService, 
+    private authService: AuthService,
     private router: Router,
-    private fb: NonNullableFormBuilder
-  ) {}
+    private fb: NonNullableFormBuilder,
+    private toastService: ToastService,
+
+  ) { }
 
   public ngOnInit(): void {
     this.validateForm = this.fb.group({
@@ -31,24 +34,21 @@ export class LoginComponent implements OnInit {
   }
 
   public login(): void {
-    if(this.validateForm.valid) {
-      const {username, password} = this.validateForm.value;
+    if (this.validateForm.valid) {
+      const { username, password } = this.validateForm.value;
       this.authService.login(username!, password!).subscribe({
         next: (response: LoginResponse) => {
-          if (response) {
-            this.authService.saveUserData(response);
-            this.router.navigate(['/admin']);
-          } else {
-            this.errorMessage = 'Invalid username or password';
-          }
+          this.authService.saveUserData(response);
+          this.toastService.showSuccess('Login successful');
+          this.router.navigate(['/admin']);
         },
         error: (error) => {
-          this.errorMessage = 'an error occured, Please try again';
+          this.toastService.showError('Invalid username or password');
         }
-        });
+      });
     } else {
-      this.errorMessage = 'Please fill in all required fields';
+      this.toastService.showWarning('Please fill in all required fields');
     }
-   
+
   }
 }
