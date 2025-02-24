@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { FilterConfig } from '../../../shared/models/filter-config.model';
 import { UserFilter } from '../../../shared/models/user-filter.model';
 import { BaseFilter } from '../../../shared/models/base-filter.model';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-user-list',
@@ -41,7 +42,8 @@ export class UserListComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private toastservice: ToastService
   ) {}
 
   public ngOnInit(): void {
@@ -64,10 +66,10 @@ export class UserListComponent implements OnInit {
     const previousStatus = user.isActive;
     user.isActive = !user.isActive;
     this.userService.toggleUserStatus(user.id, user.isActive).subscribe({
-      next:() => console.log(`${user.username} status updated to ${user.isActive ? 'Active' : 'Inactive'}`),
+      next:() => this.toastservice.showSuccess(`${user.username} status updated to ${user.isActive ? 'Active' : 'Inactive'}`),
       error: (error) => {
         user.isActive = previousStatus; 
-        console.error('Error updating status', error);   
+        this.toastservice.showError(`Error updating status', ${error}`);
       },
       complete: () => this.loadUsers()
       }
@@ -88,6 +90,7 @@ export class UserListComponent implements OnInit {
         this.users = users;
       },
       error: (error: any) => {
+        this.toastservice.showError('Error searching users');
         console.error('Error searching users', error)
       }
     });

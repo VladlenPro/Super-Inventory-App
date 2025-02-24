@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from '../../../shared/models/user.model';
 import { UserRequest } from '../../../shared/models/Requests/user-request.model';
 import { UserService } from '../../../core/services/user.service';
 import { UserResponse } from '../../../shared/models/Responses/user-response.model';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-user-edit',
@@ -13,17 +13,20 @@ import { UserResponse } from '../../../shared/models/Responses/user-response.mod
   styleUrls: ['./user-edit.component.css']
 })
 export class UserEditComponent implements OnInit {
-  userForm: FormGroup;
-  userId: string | null = null;
-  isEditMode = false;
-  private isLoading = false;
-  private errorMessage = '';
+
+  public userForm: FormGroup;
+  public isEditMode: boolean = false;
+
+  private userId: string | null = null;
+  
+
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private toastrService: ToastService
   ) {
     this.userForm = this.fb.group({
       username: ['', Validators.required],
@@ -91,14 +94,13 @@ export class UserEditComponent implements OnInit {
     this.userService.upsertUser(userRequest).subscribe({
       next: (response: UserResponse) => {
         console.log('User saved successfully!', response);
+        this.toastrService.showSuccess(response.message);
         this.router.navigate(['/users/edit', response.data.id]);
       },
-      error: (err) => {
+      error: (err: Error) => {
         console.error('Error occurred:', err);
-        this.errorMessage = 'An error occurred while saving the user.';
       },
       complete: () => {
-        this.isLoading = false;
         console.log('Upsert operation completed.');
       }
     })
@@ -106,8 +108,12 @@ export class UserEditComponent implements OnInit {
 
   private loadUser(userId: string): void {
     this.userService.getUserById(userId).subscribe({
-      next: (user: UserResponse) => this.userForm.patchValue(user.data),
-      error: (err) => console.error('Error loading user:', err)
+      next: (user: UserResponse) => {
+        this.userForm.patchValue(user.data)
+        this.toastrService.showSuccess(user.message);
+      },
+      error: (err: Error) => 
+        console.error('Error loading user:', err)
     });
   }
 }
