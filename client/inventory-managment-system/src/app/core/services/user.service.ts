@@ -7,7 +7,6 @@ import { UserMapper } from "../utils/user-maper";
 import { User } from "../../shared/models/user.model";
 import { UserRequest } from "../../shared/models/Requests/user-request.model";
 import { UserFilter } from "../../shared/models/user-filter.model";
-import { error } from "@ant-design/icons-angular";
 import { ApiErrorHandlerService } from "./api-error-handler.service";
 
 @Injectable({

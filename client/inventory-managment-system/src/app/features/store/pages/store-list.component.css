@@ -1,0 +1,14 @@
+.store-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+nz-table {
+  margin: 20px 0;
+}
+
+nz-switch {
+  margin-right: 10px;
+}

@@ -1,4 +1,3 @@
-import { UserResponse } from "../../shared/models/Responses/user-response.model";
 import { User } from "../../shared/models/user.model";
 
 export class UserMapper {

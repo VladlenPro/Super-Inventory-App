@@ -1,0 +1,36 @@
+<div class="store-list-header">
+    <h2>Stores</h2>
+    <button nz-button nzType="primary" (click)="addNewStore()">Add New Store</button>
+</div>
+
+<div class="filters">
+    <app-filters
+        [filterConfigs]="myFilters"
+        (filterChange)="handleFilterChange($event)"
+        (search)="onSearch($event)"
+    ></app-filters>
+</div>
+
+<nz-table #basicTable [nzData]="stores" [nzBordered]="true" [nzSize]="'middle'">
+    <thead>
+        <tr>
+            <th nzWidth="20%">Name</th>
+            <th nzWidth="20%">Branch</th>
+            <th nzWidth="20%">Address</th>
+            <th nzWidth="20%">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let store of basicTable.data">
+            <td>{{ store.name }}</td>
+            <td>{{ store.branchName }}</td>
+            <td>{{ store.address }}</td>
+            <td>
+                <nz-switch [ngModel]="store.isActive" (ngModelChange)="toggleStatus(store)" [nzCheckedChildren]="'Active'"
+                    [nzUnCheckedChildren]="'Inactive'"></nz-switch>
+            </td>
+            <td>
+                <button nz-button nzType="link" (click)="editStore(store.id)">Edit</button>
+            </td>
+        </tr>
+</nz-table>

@@ -11,23 +11,13 @@
       <nz-sider nzWidth="200px" nzTheme="light">
         <ul nz-menu nzMode="inline" class="sider-menu">
           <li nz-submenu nzIcon="bar-chart" nzTitle="Dashboard"></li>
-          <li nz-submenu nzIcon="user" nzTitle="Users" [routerLink]="['/admin/users']">
-            <!-- <ul>
-              <li nz-menu-item>Add user</li>
-              <li nz-menu-item>Update user</li>
-            </ul> -->
-          </li>
+          <li nz-submenu nzIcon="user" nzTitle="Users" [routerLink]="['/admin/users']"></li>
           <li nz-submenu nzTitle="categories" nzIcon="laptop">
             <ul>
               <li nz-menu-item>Add new category</li>
             </ul>
           </li>
-          <li nz-submenu nzTitle="Stores" nzIcon="shop">
-            <ul>
-              <li nz-menu-item>Add new store</li>
-              <li nz-menu-item>Update store</li>
-            </ul>
-          </li>
+          <li nz-submenu nzTitle="Stores" nzIcon="shop" [routerLink]="['/admin/stores']"></li>
         </ul>
       </nz-sider>
       <nz-layout class="inner-layout">

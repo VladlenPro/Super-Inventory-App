@@ -19,11 +19,11 @@ namespace SupperInventoryServer.Models
         [BsonElement("price")]
         public decimal Price { get; set; }
 
-        [BsonElement("isPerUnit")]
-        public bool IsPerUnit { get; set; }
+        // [BsonElement("isPerUnit")]
+        // public bool IsPerUnit { get; set; }
 
-        [BsonRepresentation(BsonType.String)]
-        public UnitOfMeasure? UnitOfMeasure { get; set; }
+        // [BsonRepresentation(BsonType.String)]
+        // public UnitOfMeasure? UnitOfMeasure { get; set; }
 
         [BsonRepresentation(BsonType.String)]
         public Category Categories { get; set; }
@@ -37,7 +37,7 @@ namespace SupperInventoryServer.Models
         public decimal? DiscauntProsent { get; set; }  
 
         [BsonElement("images")]
-        public List<string> Images { get; set; } 
+        public List<Guid> Images { get; set; } 
 
 
     }
