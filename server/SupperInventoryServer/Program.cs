@@ -19,6 +19,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddSingleton<MongoDbContext>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<IStoreRepository, StoreRepository>();
+builder.Services.AddSingleton<StoreService>();
 builder.Services.AddSingleton<UserService>();
 
 builder.Services.AddControllers().
@@ -31,6 +33,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (IServiceScope scope = app.Services.CreateScope())
+{
+    MongoDbContext dbContext = scope.ServiceProvider.GetRequiredService<MongoDbContext>();
+    await dbContext.InitializeAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
