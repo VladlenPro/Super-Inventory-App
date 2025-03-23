@@ -42,8 +42,8 @@
       nzPlaceHolder="Select roles"
     >
         <nz-option nzValue="Admin" nzLabel="Admin"></nz-option>
-        <nz-option nzValue="Manager" nzLabel="Manager"></nz-option>
-        <nz-option nzValue="User" nzLabel="User"></nz-option>
+        <nz-option nzValue="Employee" nzLabel="Employee"></nz-option>
+        <nz-option nzValue="Buyer" nzLabel="Buyer"></nz-option>
       </nz-select>
     </nz-form-control>
   </nz-form-item>
@@ -51,8 +51,13 @@
   <!-- Stores -->
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="stores">Stores</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please enter stores!">
-      <input nz-input formControlName="stores" placeholder="Enter stores (comma-separated)" />
+    <nz-form-control [nzSpan]="14">
+      <nz-select formControlName="stores" nzPlaceHolder="Select store(s)" nzMode="multiple">
+        <nz-option *ngFor="let store of stores"
+                   [nzValue]="store.id"
+                   [nzLabel]="store.name + ' - ' + store.branchName">
+        </nz-option>
+      </nz-select>
     </nz-form-control>
   </nz-form-item>
 

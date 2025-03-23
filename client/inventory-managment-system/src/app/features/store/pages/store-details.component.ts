@@ -11,7 +11,7 @@ import { StoreRequest } from '../../../shared/models/Requests/store-request.mode
   standalone: false,
   
   templateUrl: './store-details.component.html',
-  styleUrl: './store-details.component.css'
+  styleUrls: ['./store-details.component.css']
 })
 export class StoreDetailsComponent implements OnInit {
   public storeForm: FormGroup;
