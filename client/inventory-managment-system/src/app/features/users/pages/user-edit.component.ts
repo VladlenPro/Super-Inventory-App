@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserRequest } from '../../../shared/models/Requests/user-request.model';
 import { UserService } from '../../../core/services/user.service';
 import { UserResponse } from '../../../shared/models/Responses/user-response.model';
 import { ToastService } from '../../../core/services/toast.service';
+import { Store } from '../../../shared/models/store.model';
+import { StoreService } from '../../../core/services/store.service';
+import { error } from '@ant-design/icons-angular';
 
 @Component({
   selector: 'app-user-edit',
@@ -16,6 +19,7 @@ export class UserEditComponent implements OnInit {
 
   public userForm: FormGroup;
   public isEditMode: boolean = false;
+  public stores: Store[] = [];
 
   private userId: string | null = null;
   
@@ -26,15 +30,17 @@ export class UserEditComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    private toastrService: ToastService
+    private toastrService: ToastService,
+    private storeService: StoreService
   ) {
+    effect(() => this.stores = this.storeService.storeSignal());
     this.userForm = this.fb.group({
       username: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
       userTypes: [[]],
-      stores: [''],
+      stores: [[]],
       phone: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       address: ['',  [Validators.required]],
       isActive: [true]
@@ -44,6 +50,9 @@ export class UserEditComponent implements OnInit {
   public ngOnInit(): void {
     this.userId = this.route.snapshot.paramMap.get('id');
     this.isEditMode = !!this.userId;
+
+    
+    this.storeService.getStores().subscribe();
 
     if (this.isEditMode) {
       this.loadUser(this.userId!);
@@ -70,12 +79,7 @@ export class UserEditComponent implements OnInit {
 
   private mapToUserRequest(): UserRequest {
     const formValues = this.userForm.getRawValue();
-    let stores: string[] = [];
     
-    if(formValues.stores) {
-      stores = formValues.stores.split(',').map((s:string) => s.trim());
-    }
-  
     return {
       id: this.isEditMode ? this.userId ?? this.userId ?? undefined : undefined,
       username: formValues.username,
@@ -83,7 +87,7 @@ export class UserEditComponent implements OnInit {
       lastName: formValues.lastName,
       password: formValues.password,
       userTypes: formValues.userTypes,
-      stores: stores,
+      stores: formValues.stores,
       phone: formValues.phone,
       address: formValues.address,
       isActive: formValues.isActive

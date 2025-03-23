@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
+import { Injectable, signal, WritableSignal } from "@angular/core";
 import { environment } from "../../../enviroments/enviroment";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { ApiErrorHandlerService } from "./api-error-handler.service";
-import { Observable, map, catchError } from "rxjs";
+import { Observable, map, catchError, tap } from "rxjs";
 import { StoreListResponse, StoreResponse } from "../../shared/models/Responses/store-response.model";
 import { Store } from "../../shared/models/store.model";
 import { StoreMapper } from "../utils/store-maper";
@@ -17,10 +17,27 @@ export class StoreService {
 
     private apiUrl = environment.baseUrl + 'store';
 
+    private _sotres: WritableSignal<Store[]> = signal<Store[]>([]);
+    public storeSignal: WritableSignal<Store[]> = this._sotres;
+
     constructor(
         private http: HttpClient,
         private errorHandler: ApiErrorHandlerService
     ) { }
+
+    public getStores(): Observable<Store[]> {
+        return this.http.get<StoreListResponse>(this.apiUrl).pipe(
+            map((response) => response.data.map(StoreMapper.fromStoreResponsetoStore)),
+            tap((stores: Store[]) => {
+                const normalizedStores = stores.map((store) => ({
+                    ...store,
+                    products: store.products || [],
+                }));
+                this._sotres.set(normalizedStores);
+            }),
+            catchError((error: HttpErrorResponse) => this.errorHandler.handleError(error))
+        );
+    }
 
     public getAllStores(): Observable<Store[]> {
         return this.http.get<StoreListResponse>(this.apiUrl).pipe(
