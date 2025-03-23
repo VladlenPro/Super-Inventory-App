@@ -17,6 +17,7 @@ namespace SupperInventoryServer.Data
         public IMongoCollection<Product> Products => _database.GetCollection<Product>("Product");
         public IMongoCollection<User> Users => _database.GetCollection<User>("User");
         public IMongoCollection<Store> Stores => _database.GetCollection<Store>("Store");
+        public IMongoCollection<Category> Categories => _database.GetCollection<Category>("Category");
 
         public async Task InitializeAsync()
         {
